@@ -156,14 +156,13 @@
 
 .professors-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.25rem;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
 }
 
-/* Professor Card */
+/* Professor Card - Style Superprof */
 .prof-card {
-  display: flex;
-  flex-direction: column;
+  display: block;
   text-decoration: none;
   color: inherit;
   transition: transform 0.2s ease;
@@ -173,18 +172,45 @@
   transform: translateY(-4px);
 }
 
+.prof-card:hover .prof-image img {
+  transform: scale(1.03);
+}
+
 .prof-image {
   position: relative;
-  aspect-ratio: 3/4;
+  aspect-ratio: 4/5;
   border-radius: 16px;
   overflow: hidden;
-  margin-bottom: 0.75rem;
 }
 
 .prof-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+/* Overlay avec nom sur la photo */
+.prof-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 4rem 1rem 1rem;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+  color: white;
+}
+
+.prof-overlay h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.prof-overlay p {
+  font-size: 0.85rem;
+  margin: 0.2rem 0 0 0;
+  opacity: 0.9;
 }
 
 .fav-btn {
@@ -200,7 +226,7 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: #9ca3af;
+  color: #d1d5db;
   transition: all 0.2s ease;
 }
 
@@ -211,7 +237,7 @@
 
 .free-badge {
   position: absolute;
-  bottom: 12px;
+  top: 12px;
   left: 12px;
   background: #10b981;
   color: white;
@@ -222,33 +248,16 @@
   letter-spacing: 0.3px;
 }
 
-.prof-info {
-  margin-bottom: 0.5rem;
-}
-
-.prof-info h3 {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #111827;
-  margin: 0;
-}
-
-.prof-location {
-  font-size: 0.8rem;
-  color: #6b7280;
-  margin: 0.15rem 0 0 0;
-}
-
+/* Infos sous la vignette */
 .prof-details {
-  border-top: 1px solid #f3f4f6;
-  padding-top: 0.5rem;
+  padding: 0.75rem 0.25rem 0;
 }
 
 .prof-rating {
   display: flex;
   align-items: center;
   gap: 0.35rem;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   color: #374151;
   margin-bottom: 0.35rem;
 }
@@ -265,11 +274,11 @@
   margin-left: auto;
   color: #10b981;
   font-weight: 600;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
 }
 
 .prof-subject {
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   color: #6b7280;
   margin: 0;
   line-height: 1.4;
@@ -337,6 +346,7 @@
 @media (max-width: 768px) {
   .professors-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
   }
   
   .trust-grid {
@@ -378,10 +388,6 @@
 
   .category-item span {
     font-size: 0.7rem;
-  }
-
-  .professors-grid {
-    gap: 1rem;
   }
 
   .trust-grid {

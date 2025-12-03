@@ -1,12 +1,10 @@
 import { useState, useMemo } from 'react'
-import { useSearchParams } from 'react-router-dom'
-import { Filter, SlidersHorizontal, Shield, X } from 'lucide-react'
-import SearchBar from '../components/SearchBar'
-import TeacherCard from '../components/TeacherCard'
-import { teachers, subjects, cities } from '../data/teachers'
+import { useSearchParams, Link } from 'react-router-dom'
+import { Search as SearchIcon, MapPin, SlidersHorizontal, Heart, ChevronDown } from 'lucide-react'
+import { teachers, cities } from '../data/teachers'
 import './Search.css'
 
-export default function Search() {
+export default function SearchPage() {
   const [searchParams] = useSearchParams()
   const [showFilters, setShowFilters] = useState(false)
   
@@ -22,7 +20,7 @@ export default function Search() {
 
   const filteredTeachers = useMemo(() => {
     return teachers.filter(teacher => {
-      if (filters.subject && !teacher.subjects.includes(filters.subject) && teacher.subject !== filters.subject) {
+      if (filters.subject && !teacher.subjects.some(s => s.toLowerCase().includes(filters.subject.toLowerCase())) && !teacher.subject.toLowerCase().includes(filters.subject.toLowerCase())) {
         return false
       }
       if (filters.city && teacher.city !== filters.city) {
@@ -51,45 +49,22 @@ export default function Search() {
     })
   }
 
-  const hasActiveFilters = filters.subject || filters.city || filters.minRating > 0
-
   return (
     <div className="search-page">
+      {/* Search Header */}
       <div className="search-header">
-        <div className="container">
-          <h1>Trouver un professeur</h1>
-          <p>Tous nos professeurs sont vérifiés et les cours sont 100% gratuits</p>
-          <SearchBar variant="compact" />
-        </div>
-      </div>
-
-      <div className="search-content container">
-        <aside className={`filters-sidebar ${showFilters ? 'open' : ''}`}>
-          <div className="filters-header">
-            <h3>
-              <SlidersHorizontal size={20} />
-              Filtres
-            </h3>
-            <button className="close-filters" onClick={() => setShowFilters(false)}>
-              <X size={20} />
-            </button>
-          </div>
-
-          <div className="filter-group">
-            <label>Matière</label>
-            <select 
+        <div className="search-bar-container">
+          <div className="search-input-wrapper">
+            <SearchIcon size={18} />
+            <input 
+              type="text"
+              placeholder="Quelle matière ?"
               value={filters.subject}
               onChange={(e) => setFilters({...filters, subject: e.target.value})}
-            >
-              <option value="">Toutes les matières</option>
-              {subjects.map(s => (
-                <option key={s} value={s}>{s}</option>
-              ))}
-            </select>
+            />
           </div>
-
-          <div className="filter-group">
-            <label>Ville</label>
+          <div className="search-input-wrapper">
+            <MapPin size={18} />
             <select 
               value={filters.city}
               onChange={(e) => setFilters({...filters, city: e.target.value})}
@@ -100,75 +75,90 @@ export default function Search() {
               ))}
             </select>
           </div>
+          <button className="filter-btn" onClick={() => setShowFilters(!showFilters)}>
+            <SlidersHorizontal size={18} />
+            Filtres
+            <ChevronDown size={16} />
+          </button>
+        </div>
 
-          <div className="filter-group">
-            <label>Note minimum</label>
-            <select 
-              value={filters.minRating}
-              onChange={(e) => setFilters({...filters, minRating: Number(e.target.value)})}
-            >
-              <option value={0}>Toutes les notes</option>
-              <option value={4}>4+ étoiles</option>
-              <option value={4.5}>4.5+ étoiles</option>
-              <option value={4.8}>4.8+ étoiles</option>
-            </select>
-          </div>
-
-          <div className="filter-group">
-            <label className="checkbox-label">
+        {showFilters && (
+          <div className="filters-dropdown">
+            <div className="filter-group">
+              <label>Note minimum</label>
+              <select 
+                value={filters.minRating}
+                onChange={(e) => setFilters({...filters, minRating: Number(e.target.value)})}
+              >
+                <option value={0}>Toutes</option>
+                <option value={4}>4+ ★</option>
+                <option value={4.5}>4.5+ ★</option>
+                <option value={4.8}>4.8+ ★</option>
+              </select>
+            </div>
+            <label className="checkbox-filter">
               <input 
                 type="checkbox"
                 checked={filters.verifiedOnly}
                 onChange={(e) => setFilters({...filters, verifiedOnly: e.target.checked})}
               />
-              <Shield size={16} />
-              Profils 100% vérifiés uniquement
+              Profils vérifiés uniquement
             </label>
-          </div>
-
-          {hasActiveFilters && (
-            <button className="clear-filters" onClick={clearFilters}>
+            <button className="clear-btn" onClick={clearFilters}>
               Effacer les filtres
             </button>
+          </div>
+        )}
+      </div>
+
+      {/* Results */}
+      <div className="search-results">
+        <div className="results-header">
+          <h1>
+            <strong>{filteredTeachers.length}</strong> professeurs 
+            {filters.subject && ` de ${filters.subject}`}
+            {filters.city && ` à ${filters.city}`}
+            <span className="stars">★★★★★</span>
+          </h1>
+        </div>
+
+        <div className="results-grid">
+          {filteredTeachers.length > 0 ? (
+            filteredTeachers.map(teacher => (
+              <Link to={`/profil/${teacher.id}`} key={teacher.id} className="prof-card">
+                <div className="prof-image">
+                  <img src={teacher.photo} alt={teacher.name} />
+                  <div className="prof-overlay">
+                    <h3>{teacher.name}</h3>
+                    <p>{teacher.city} (face à face & webcam)</p>
+                  </div>
+                  <button className="fav-btn" onClick={(e) => e.preventDefault()}>
+                    <Heart size={18} />
+                  </button>
+                  <span className="free-badge">GRATUIT & VÉRIFIÉ</span>
+                </div>
+                <div className="prof-details">
+                  <div className="prof-rating">
+                    <span className="stars-small">★</span> {teacher.rating} 
+                    <span className="reviews">({teacher.reviewCount} avis)</span>
+                    <span className="ambassador">✓ Vérifié</span>
+                  </div>
+                  <p className="prof-subject">
+                    <strong>{teacher.subject}</strong> · {teacher.description.slice(0, 55)}...
+                  </p>
+                </div>
+              </Link>
+            ))
+          ) : (
+            <div className="no-results">
+              <p>Aucun professeur ne correspond à vos critères.</p>
+              <button onClick={clearFilters} className="reset-btn">
+                Réinitialiser les filtres
+              </button>
+            </div>
           )}
-
-          <div className="filter-info">
-            <Shield size={16} />
-            <span>Tous les profils affichés ont été vérifiés : identité, adresse, diplômes et avis.</span>
-          </div>
-        </aside>
-
-        <div className="search-results">
-          <div className="results-header">
-            <span className="results-count">
-              <strong>{filteredTeachers.length}</strong> professeur{filteredTeachers.length > 1 ? 's' : ''} trouvé{filteredTeachers.length > 1 ? 's' : ''}
-            </span>
-            <button 
-              className="toggle-filters"
-              onClick={() => setShowFilters(true)}
-            >
-              <Filter size={18} />
-              Filtres
-            </button>
-          </div>
-
-          <div className="results-grid">
-            {filteredTeachers.length > 0 ? (
-              filteredTeachers.map(teacher => (
-                <TeacherCard key={teacher.id} teacher={teacher} />
-              ))
-            ) : (
-              <div className="no-results">
-                <p>Aucun professeur ne correspond à vos critères.</p>
-                <button onClick={clearFilters} className="btn btn-primary">
-                  Réinitialiser les filtres
-                </button>
-              </div>
-            )}
-          </div>
         </div>
       </div>
     </div>
   )
 }
-

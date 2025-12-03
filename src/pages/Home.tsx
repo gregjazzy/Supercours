@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Search, Calculator, Languages, BookOpen, Code, Music, Dumbbell, Palette, GraduationCap, Heart, ChevronRight } from 'lucide-react'
-import { teachers, subjects, cities } from '../data/teachers'
+import { teachers } from '../data/teachers'
 import { Link } from 'react-router-dom'
 import './Home.css'
 
@@ -96,20 +96,23 @@ export default function Home() {
             <Link to={`/profil/${teacher.id}`} key={teacher.id} className="prof-card">
               <div className="prof-image">
                 <img src={teacher.photo} alt={teacher.name} />
-                <button className="fav-btn"><Heart size={18} /></button>
+                <div className="prof-overlay">
+                  <h3>{teacher.name}</h3>
+                  <p>{teacher.city} (face à face & webcam)</p>
+                </div>
+                <button className="fav-btn" onClick={(e) => e.preventDefault()}>
+                  <Heart size={18} />
+                </button>
                 <span className="free-badge">GRATUIT & VÉRIFIÉ</span>
-              </div>
-              <div className="prof-info">
-                <h3>{teacher.name}</h3>
-                <p className="prof-location">{teacher.city} (face à face & webcam)</p>
               </div>
               <div className="prof-details">
                 <div className="prof-rating">
-                  <span className="stars-small">★</span> {teacher.rating} <span className="reviews">({teacher.reviewCount} avis)</span>
+                  <span className="stars-small">★</span> {teacher.rating} 
+                  <span className="reviews">({teacher.reviewCount} avis)</span>
                   <span className="ambassador">✓ Vérifié</span>
                 </div>
                 <p className="prof-subject">
-                  <strong>{teacher.subject}</strong> · {teacher.description.slice(0, 60)}...
+                  <strong>{teacher.subject}</strong> · {teacher.description.slice(0, 55)}...
                 </p>
               </div>
             </Link>
