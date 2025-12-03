@@ -2,7 +2,7 @@ import { useParams, Link } from 'react-router-dom'
 import { 
   Star, MapPin, Clock, Shield, CheckCircle, Award, 
   MessageCircle, Calendar, Users, ArrowLeft, BadgeCheck,
-  Mail, Phone, Globe
+  Mail, Phone, Globe, Euro
 } from 'lucide-react'
 import { teachers } from '../data/teachers'
 import './Profile.css'
@@ -49,7 +49,7 @@ export default function Profile() {
                 {allVerified && (
                   <div className="verified-badge-large">
                     <Shield size={20} />
-                    <span>Vérifié</span>
+                    <span>Profil vérifié</span>
                   </div>
                 )}
               </div>
@@ -92,9 +92,12 @@ export default function Profile() {
                 </div>
 
                 <div className="profile-price">
-                  <span className="price-label">Tarif</span>
-                  <span className="price-value">GRATUIT</span>
-                  <span className="price-note">Aucune commission, jamais</span>
+                  <div className="price-main">
+                    <Euro size={24} />
+                    <span className="price-value">{teacher.hourlyRate}€</span>
+                    <span className="price-unit">/heure</span>
+                  </div>
+                  <span className="price-note">Mise en relation gratuite · 0% de commission</span>
                 </div>
               </div>
             </div>
@@ -143,7 +146,7 @@ export default function Profile() {
           <aside className="profile-sidebar">
             <div className="profile-card contact-card">
               <h3>Contacter {teacher.name.split(' ')[0]}</h3>
-              <p>Envoyez un message pour organiser votre premier cours gratuit.</p>
+              <p>Envoyez un message pour organiser votre premier cours.</p>
               <button className="btn btn-primary btn-full">
                 <MessageCircle size={18} />
                 Envoyer un message
@@ -160,14 +163,14 @@ export default function Profile() {
               </div>
               <p className="contact-note">
                 <Shield size={14} />
-                Mise en relation directe et gratuite
+                Mise en relation gratuite
               </p>
             </div>
 
             <div className="profile-card verification-card">
               <h3>
                 <Shield size={20} />
-                Vérifications
+                Données vérifiées
               </h3>
               
               <div className="verifications-list">
@@ -188,7 +191,7 @@ export default function Profile() {
                 </div>
                 <div className={`verification-item ${teacher.verified.reviews ? 'verified' : ''}`}>
                   <Star size={18} />
-                  <span>Avis vérifiés (IP + paiement)</span>
+                  <span>Avis contrôlés (IP + paiement)</span>
                   {teacher.verified.reviews && <CheckCircle size={16} className="check" />}
                 </div>
               </div>
@@ -218,4 +221,3 @@ export default function Profile() {
     </div>
   )
 }
-

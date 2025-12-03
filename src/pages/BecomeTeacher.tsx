@@ -41,8 +41,8 @@ export default function BecomeTeacher() {
     <div className="become-teacher-page">
       <div className="become-header">
         <div className="container">
-          <h1>Devenez professeur sur Supercours</h1>
-          <p>Partagez vos connaissances gratuitement et rejoignez notre communauté vérifiée</p>
+          <h1>Devenez professeur sur TrustTutor</h1>
+          <p>Partagez vos connaissances et rejoignez notre communauté vérifiée</p>
         </div>
       </div>
 
@@ -351,7 +351,7 @@ export default function BecomeTeacher() {
                   </div>
                   <h2>Inscription reçue !</h2>
                   <p>
-                    Merci pour votre inscription sur Supercours. Notre équipe va maintenant vérifier vos documents.
+                    Merci pour votre inscription sur TrustTutor. Notre équipe va maintenant vérifier vos documents.
                   </p>
                   
                   <div className="confirmation-steps">
@@ -383,11 +383,11 @@ export default function BecomeTeacher() {
 
           <aside className="become-sidebar">
             <div className="sidebar-card">
-              <h3>Pourquoi Supercours ?</h3>
+              <h3>Pourquoi TrustTutor ?</h3>
               <ul className="benefits-list">
                 <li>
                   <CheckCircle size={18} />
-                  <span><strong>100% gratuit</strong> - Aucune commission prélevée</span>
+                  <span><strong>0% commission</strong> - Vous gardez 100% de vos revenus</span>
                 </li>
                 <li>
                   <CheckCircle size={18} />
@@ -426,4 +426,3 @@ export default function BecomeTeacher() {
     </div>
   )
 }
-

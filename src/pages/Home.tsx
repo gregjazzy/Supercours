@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Search, Calculator, Languages, BookOpen, Code, Music, Dumbbell, Palette, GraduationCap, Heart, ChevronRight } from 'lucide-react'
+import { Search, Calculator, Languages, BookOpen, Code, Music, Dumbbell, Palette, GraduationCap, Heart, ChevronRight, Shield, CheckCircle, BadgeCheck, FileCheck } from 'lucide-react'
 import { teachers } from '../data/teachers'
 import { Link } from 'react-router-dom'
 import './Home.css'
@@ -52,7 +52,8 @@ export default function Home() {
     <div className="home">
       {/* Hero */}
       <section className="hero">
-        <h1>Trouvez le<br/>professeur parfait</h1>
+        <h1>Trouvez votre<br/>professeur de confiance</h1>
+        <p className="hero-sub">Données vérifiées · Mise en relation gratuite · 0% de commission</p>
         
         <form className="search-form" onSubmit={handleSearch}>
           <div className="search-box">
@@ -87,9 +88,32 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Verification Banner */}
+      <section className="verification-banner">
+        <div className="verif-item">
+          <BadgeCheck size={20} />
+          <span><strong>Identité</strong> vérifiée</span>
+        </div>
+        <div className="verif-item">
+          <FileCheck size={20} />
+          <span><strong>Diplômes</strong> authentifiés</span>
+        </div>
+        <div className="verif-item">
+          <Shield size={20} />
+          <span><strong>Adresse</strong> confirmée</span>
+        </div>
+        <div className="verif-item">
+          <CheckCircle size={20} />
+          <span><strong>Avis</strong> contrôlés</span>
+        </div>
+      </section>
+
       {/* Professors */}
       <section className="professors">
-        <h2>8 500+ professeurs vérifiés <span className="stars">★★★★★</span></h2>
+        <div className="professors-header">
+          <h2>Professeurs vérifiés</h2>
+          <p>Données contrôlées · Mise en relation gratuite · 0% de commission pour les professeurs</p>
+        </div>
         
         <div className="professors-grid">
           {teachers.map(teacher => (
@@ -98,50 +122,59 @@ export default function Home() {
                 <img src={teacher.photo} alt={teacher.name} />
                 <div className="prof-overlay">
                   <h3>{teacher.name}</h3>
-                  <p>{teacher.city} (face à face & webcam)</p>
+                  <p>{teacher.city}</p>
                 </div>
                 <button className="fav-btn" onClick={(e) => e.preventDefault()}>
                   <Heart size={18} />
                 </button>
-                <span className="free-badge">GRATUIT & VÉRIFIÉ</span>
+                <div className="price-tag">{teacher.hourlyRate}€<span>/h</span></div>
+                <div className="verified-tag">
+                  <CheckCircle size={12} />
+                  Vérifié
+                </div>
               </div>
               <div className="prof-details">
                 <div className="prof-rating">
                   <span className="stars-small">★</span> {teacher.rating} 
-                  <span className="reviews">({teacher.reviewCount} avis)</span>
-                  <span className="ambassador">✓ Vérifié</span>
+                  <span className="reviews">({teacher.reviewCount})</span>
                 </div>
                 <p className="prof-subject">
-                  <strong>{teacher.subject}</strong> · {teacher.description.slice(0, 55)}...
+                  <strong>{teacher.subject}</strong> · {teacher.description.slice(0, 50)}...
                 </p>
+                <p className="prof-free">Mise en relation gratuite</p>
               </div>
             </Link>
           ))}
         </div>
 
         <Link to="/recherche" className="see-more">
-          + de professeurs près de chez vous
+          Voir tous les professeurs →
         </Link>
       </section>
 
-      {/* Trust */}
-      <section className="trust-section">
-        <div className="trust-grid">
-          <div className="trust-item">
-            <span className="trust-icon">🛡️</span>
-            <strong>Identité vérifiée</strong>
+      {/* Why Us */}
+      <section className="why-section">
+        <h2>Pourquoi TrustTutor ?</h2>
+        <div className="why-grid">
+          <div className="why-card">
+            <div className="why-icon">🔒</div>
+            <h3>Données vérifiées</h3>
+            <p>Identité, diplômes, adresse et avis : tout est contrôlé par notre équipe.</p>
           </div>
-          <div className="trust-item">
-            <span className="trust-icon">🎓</span>
-            <strong>Diplômes authentifiés</strong>
+          <div className="why-card">
+            <div className="why-icon">💰</div>
+            <h3>Mise en relation gratuite</h3>
+            <p>Contactez les professeurs sans frais. Aucun abonnement, aucune commission cachée.</p>
           </div>
-          <div className="trust-item">
-            <span className="trust-icon">⭐</span>
-            <strong>Avis vérifiés (IP)</strong>
+          <div className="why-card">
+            <div className="why-icon">🎓</div>
+            <h3>0% de commission</h3>
+            <p>Les professeurs gardent 100% de leurs revenus. Pas de frais prélevés sur les cours.</p>
           </div>
-          <div className="trust-item">
-            <span className="trust-icon">💚</span>
-            <strong>100% Gratuit</strong>
+          <div className="why-card">
+            <div className="why-icon">⚖️</div>
+            <h3>Conforme DGCCRF</h3>
+            <p>Plateforme respectant toutes les réglementations de protection des consommateurs.</p>
           </div>
         </div>
       </section>

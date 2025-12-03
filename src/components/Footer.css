@@ -1,39 +1,53 @@
 .footer {
-  background: #111827;
+  background: #1a1a1a;
   color: white;
   padding: 3rem 1.5rem 1.5rem;
 }
 
 .footer-container {
-  max-width: 1200px;
+  max-width: 1100px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1.2fr 2fr;
+  grid-template-columns: 1fr 2fr;
   gap: 3rem;
 }
 
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
 .footer-logo {
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: #10b981;
   text-decoration: none;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.footer-logo .logo-main {
+  color: white;
+}
+
+.footer-logo .logo-accent {
+  color: #c9a227;
 }
 
 .footer-brand p {
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.7);
   font-size: 0.9rem;
-  margin: 0.75rem 0;
   line-height: 1.5;
+  margin: 0;
 }
 
 .dgccrf-badge {
   display: inline-block;
-  background: rgba(16, 185, 129, 0.15);
-  color: #10b981;
-  font-size: 0.75rem;
-  font-weight: 600;
-  padding: 0.35rem 0.75rem;
+  background: rgba(201, 162, 39, 0.15);
+  color: #c9a227;
+  padding: 0.4rem 0.75rem;
   border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  width: fit-content;
 }
 
 .footer-links {
@@ -42,37 +56,40 @@
   gap: 2rem;
 }
 
+.footer-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
 .footer-col h4 {
-  font-size: 0.8rem;
+  color: white;
+  font-size: 0.9rem;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin: 0 0 1rem 0;
-  color: rgba(255, 255, 255, 0.5);
+  margin: 0 0 0.5rem 0;
 }
 
 .footer-col a {
-  display: block;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.6);
   text-decoration: none;
-  font-size: 0.9rem;
-  margin-bottom: 0.6rem;
+  font-size: 0.85rem;
   transition: color 0.2s ease;
 }
 
 .footer-col a:hover {
-  color: #10b981;
+  color: #c9a227;
 }
 
 .footer-bottom {
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  margin-top: 2rem;
+  max-width: 1100px;
+  margin: 2rem auto 0;
   padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
   text-align: center;
 }
 
 .footer-bottom p {
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.5);
   font-size: 0.8rem;
   margin: 0;
 }
@@ -91,6 +108,5 @@
 @media (max-width: 500px) {
   .footer-links {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
   }
 }

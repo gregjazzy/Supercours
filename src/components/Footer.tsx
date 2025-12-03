@@ -6,8 +6,10 @@ export default function Footer() {
     <footer className="footer">
       <div className="footer-container">
         <div className="footer-brand">
-          <Link to="/" className="footer-logo">supercours</Link>
-          <p>La plateforme 100% gratuite de cours particuliers vérifiés.</p>
+          <Link to="/" className="footer-logo">
+            <span className="logo-main">Trust</span><span className="logo-accent">Tutor</span>
+          </Link>
+          <p>Cours particuliers 100% vérifiés. Mise en relation gratuite.</p>
           <span className="dgccrf-badge">✓ Conforme DGCCRF</span>
         </div>
 
@@ -24,7 +26,7 @@ export default function Footer() {
             <Link to="/devenir-professeur">Inscription gratuite</Link>
           </div>
           <div className="footer-col">
-            <h4>Supercours</h4>
+            <h4>TrustTutor</h4>
             <Link to="/mentions-legales">Mentions légales</Link>
             <Link to="/mentions-legales">CGU</Link>
             <Link to="/mentions-legales">Confidentialité</Link>
@@ -33,7 +35,7 @@ export default function Footer() {
       </div>
       
       <div className="footer-bottom">
-        <p>© 2025 Supercours · 100% gratuit · Tous les profils sont vérifiés</p>
+        <p>© 2025 TrustTutor · Mise en relation gratuite · Tous les profils sont vérifiés</p>
       </div>
     </footer>
   )

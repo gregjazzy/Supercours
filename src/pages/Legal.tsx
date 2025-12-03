@@ -31,9 +31,9 @@ export default function Legal() {
               <div className="guarantee-cards">
                 <div className="guarantee-card">
                   <CheckCircle className="guarantee-icon" />
-                  <h3>100% Gratuit</h3>
+                  <h3>Mise en relation gratuite</h3>
                   <p>
-                    Supercours est et restera toujours 100% gratuit. Nous ne prélevons aucune commission 
+                    TrustTutor est et restera toujours 100% gratuit. Nous ne prélevons aucune commission 
                     sur les cours, ni de frais d'inscription. Notre modèle repose sur des dons volontaires 
                     et des partenariats éducatifs.
                   </p>
@@ -54,7 +54,7 @@ export default function Legal() {
                   <h3>Avis authentiques</h3>
                   <p>
                     Tous les avis sont vérifiés par contrôle d'adresse IP et vérification du moyen 
-                    de paiement. Impossible de publier un faux avis sur Supercours.
+                    de paiement. Impossible de publier un faux avis sur TrustTutor.
                   </p>
                 </div>
 
@@ -78,7 +78,7 @@ export default function Legal() {
               <div className="legal-text">
                 <h3>Éditeur du site</h3>
                 <p>
-                  <strong>Supercours</strong><br />
+                  <strong>TrustTutor</strong><br />
                   Société par Actions Simplifiée (SAS)<br />
                   Capital social : 10 000 €<br />
                   RCS Paris : XXX XXX XXX<br />
@@ -95,7 +95,7 @@ export default function Legal() {
 
                 <h3>Contact</h3>
                 <p>
-                  Email : contact@supercours.fr<br />
+                  Email : contact@trusttutor.com<br />
                   Téléphone : 01 00 00 00 00
                 </p>
               </div>
@@ -107,14 +107,14 @@ export default function Legal() {
               <div className="legal-text">
                 <h3>Article 1 - Objet</h3>
                 <p>
-                  Les présentes CGU régissent l'utilisation de la plateforme Supercours, service gratuit 
+                  Les présentes CGU régissent l'utilisation de la plateforme TrustTutor, service gratuit 
                   de mise en relation entre professeurs particuliers et élèves. L'utilisation du site 
                   implique l'acceptation pleine et entière de ces conditions.
                 </p>
 
                 <h3>Article 2 - Gratuité du service</h3>
                 <p>
-                  Supercours est un service entièrement gratuit. Aucune commission n'est prélevée sur 
+                  TrustTutor est un service entièrement gratuit. Aucune commission n'est prélevée sur 
                   les cours dispensés via notre plateforme. Aucun frais d'inscription n'est demandé 
                   aux utilisateurs, qu'ils soient professeurs ou élèves.
                 </p>
@@ -128,7 +128,7 @@ export default function Legal() {
 
                 <h3>Article 4 - Responsabilités</h3>
                 <p>
-                  Supercours agit en qualité d'intermédiaire et ne peut être tenu responsable du 
+                  TrustTutor agit en qualité d'intermédiaire et ne peut être tenu responsable du 
                   contenu des cours dispensés ni des éventuels litiges entre professeurs et élèves. 
                   Les cours sont organisés directement entre les parties.
                 </p>
@@ -172,7 +172,7 @@ export default function Legal() {
                 <p>
                   Conformément au RGPD, vous disposez d'un droit d'accès, de rectification, 
                   de suppression et de portabilité de vos données. Pour exercer ces droits, 
-                  contactez-nous à : dpo@supercours.fr
+                  contactez-nous à : dpo@trusttutor.com
                 </p>
               </div>
             </section>
@@ -250,4 +250,3 @@ export default function Legal() {
     </div>
   )
 }
-

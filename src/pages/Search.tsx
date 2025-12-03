@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react'
 import { useSearchParams, Link } from 'react-router-dom'
-import { Search as SearchIcon, MapPin, SlidersHorizontal, Heart, ChevronDown } from 'lucide-react'
+import { Search as SearchIcon, MapPin, SlidersHorizontal, Heart, ChevronDown, CheckCircle } from 'lucide-react'
 import { teachers, cities } from '../data/teachers'
 import './Search.css'
 
@@ -15,7 +15,8 @@ export default function SearchPage() {
     subject: initialSubject,
     city: initialCity,
     verifiedOnly: true,
-    minRating: 0
+    minRating: 0,
+    maxPrice: 100
   })
 
   const filteredTeachers = useMemo(() => {
@@ -27,13 +28,13 @@ export default function SearchPage() {
         return false
       }
       if (filters.verifiedOnly) {
-        const allVerified = teacher.verified.identity && 
-          teacher.verified.address && 
-          teacher.verified.diploma && 
-          teacher.verified.reviews
+        const allVerified = teacher.verified.identity && teacher.verified.address && teacher.verified.diploma && teacher.verified.reviews
         if (!allVerified) return false
       }
       if (filters.minRating && teacher.rating < filters.minRating) {
+        return false
+      }
+      if (filters.maxPrice && teacher.hourlyRate > filters.maxPrice) {
         return false
       }
       return true
@@ -41,12 +42,7 @@ export default function SearchPage() {
   }, [filters])
 
   const clearFilters = () => {
-    setFilters({
-      subject: '',
-      city: '',
-      verifiedOnly: true,
-      minRating: 0
-    })
+    setFilters({ subject: '', city: '', verifiedOnly: true, minRating: 0, maxPrice: 100 })
   }
 
   return (
@@ -65,14 +61,9 @@ export default function SearchPage() {
           </div>
           <div className="search-input-wrapper">
             <MapPin size={18} />
-            <select 
-              value={filters.city}
-              onChange={(e) => setFilters({...filters, city: e.target.value})}
-            >
+            <select value={filters.city} onChange={(e) => setFilters({...filters, city: e.target.value})}>
               <option value="">Toutes les villes</option>
-              {cities.map(c => (
-                <option key={c} value={c}>{c}</option>
-              ))}
+              {cities.map(c => <option key={c} value={c}>{c}</option>)}
             </select>
           </div>
           <button className="filter-btn" onClick={() => setShowFilters(!showFilters)}>
@@ -85,11 +76,18 @@ export default function SearchPage() {
         {showFilters && (
           <div className="filters-dropdown">
             <div className="filter-group">
-              <label>Note minimum</label>
-              <select 
-                value={filters.minRating}
-                onChange={(e) => setFilters({...filters, minRating: Number(e.target.value)})}
-              >
+              <label>Tarif max</label>
+              <select value={filters.maxPrice} onChange={(e) => setFilters({...filters, maxPrice: Number(e.target.value)})}>
+                <option value={100}>Tous les tarifs</option>
+                <option value={20}>≤ 20€/h</option>
+                <option value={30}>≤ 30€/h</option>
+                <option value={40}>≤ 40€/h</option>
+                <option value={50}>≤ 50€/h</option>
+              </select>
+            </div>
+            <div className="filter-group">
+              <label>Note min</label>
+              <select value={filters.minRating} onChange={(e) => setFilters({...filters, minRating: Number(e.target.value)})}>
                 <option value={0}>Toutes</option>
                 <option value={4}>4+ ★</option>
                 <option value={4.5}>4.5+ ★</option>
@@ -97,16 +95,10 @@ export default function SearchPage() {
               </select>
             </div>
             <label className="checkbox-filter">
-              <input 
-                type="checkbox"
-                checked={filters.verifiedOnly}
-                onChange={(e) => setFilters({...filters, verifiedOnly: e.target.checked})}
-              />
+              <input type="checkbox" checked={filters.verifiedOnly} onChange={(e) => setFilters({...filters, verifiedOnly: e.target.checked})} />
               Profils vérifiés uniquement
             </label>
-            <button className="clear-btn" onClick={clearFilters}>
-              Effacer les filtres
-            </button>
+            <button className="clear-btn" onClick={clearFilters}>Effacer</button>
           </div>
         )}
       </div>
@@ -115,11 +107,11 @@ export default function SearchPage() {
       <div className="search-results">
         <div className="results-header">
           <h1>
-            <strong>{filteredTeachers.length}</strong> professeurs 
-            {filters.subject && ` de ${filters.subject}`}
-            {filters.city && ` à ${filters.city}`}
-            <span className="stars">★★★★★</span>
+            <strong>{filteredTeachers.length}</strong> professeurs vérifiés
+            {filters.subject && ` · ${filters.subject}`}
+            {filters.city && ` · ${filters.city}`}
           </h1>
+          <p className="results-sub">Mise en relation gratuite · 0% de commission</p>
         </div>
 
         <div className="results-grid">
@@ -130,31 +122,33 @@ export default function SearchPage() {
                   <img src={teacher.photo} alt={teacher.name} />
                   <div className="prof-overlay">
                     <h3>{teacher.name}</h3>
-                    <p>{teacher.city} (face à face & webcam)</p>
+                    <p>{teacher.city}</p>
                   </div>
                   <button className="fav-btn" onClick={(e) => e.preventDefault()}>
                     <Heart size={18} />
                   </button>
-                  <span className="free-badge">GRATUIT & VÉRIFIÉ</span>
+                  <div className="price-tag">{teacher.hourlyRate}€<span>/h</span></div>
+                  <div className="verified-tag">
+                    <CheckCircle size={12} />
+                    Vérifié
+                  </div>
                 </div>
                 <div className="prof-details">
                   <div className="prof-rating">
                     <span className="stars-small">★</span> {teacher.rating} 
-                    <span className="reviews">({teacher.reviewCount} avis)</span>
-                    <span className="ambassador">✓ Vérifié</span>
+                    <span className="reviews">({teacher.reviewCount})</span>
                   </div>
                   <p className="prof-subject">
-                    <strong>{teacher.subject}</strong> · {teacher.description.slice(0, 55)}...
+                    <strong>{teacher.subject}</strong> · {teacher.description.slice(0, 50)}...
                   </p>
+                  <p className="prof-free">Mise en relation gratuite</p>
                 </div>
               </Link>
             ))
           ) : (
             <div className="no-results">
-              <p>Aucun professeur ne correspond à vos critères.</p>
-              <button onClick={clearFilters} className="reset-btn">
-                Réinitialiser les filtres
-              </button>
+              <p>Aucun professeur trouvé.</p>
+              <button onClick={clearFilters} className="reset-btn">Réinitialiser</button>
             </div>
           )}
         </div>
