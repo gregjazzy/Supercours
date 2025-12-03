@@ -1,8 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Search, MapPin, BookOpen, Languages, Calculator, Music, Dumbbell, Code, Palette, GraduationCap, Heart, ChevronLeft, ChevronRight, Shield, Star, CheckCircle } from 'lucide-react'
-import TeacherCard from '../components/TeacherCard'
+import { Search, Calculator, Languages, BookOpen, Code, Music, Dumbbell, Palette, GraduationCap, Heart, ChevronRight } from 'lucide-react'
 import { teachers, subjects, cities } from '../data/teachers'
+import { Link } from 'react-router-dom'
 import './Home.css'
 
 const categories = [
@@ -10,23 +10,38 @@ const categories = [
   { name: "Anglais", icon: Languages },
   { name: "Français", icon: BookOpen },
   { name: "Informatique", icon: Code },
-  { name: "Musique", icon: Music },
-  { name: "Sport", icon: Dumbbell },
+  { name: "Piano", icon: Music },
+  { name: "Soutien scolaire", icon: GraduationCap },
+  { name: "Coach sportif", icon: Dumbbell },
   { name: "Arts", icon: Palette },
-  { name: "Sciences", icon: GraduationCap },
 ]
+
+const suggestions = ["Guitare", "Yoga", "Photographie", "Cuisine", "Anglais", "Piano", "Dessin", "Espagnol"]
 
 export default function Home() {
   const navigate = useNavigate()
-  const [searchSubject, setSearchSubject] = useState('')
-  const [searchCity, setSearchCity] = useState('')
+  const [searchValue, setSearchValue] = useState('')
+  const [placeholder, setPlaceholder] = useState('Maths')
+  const [placeholderIndex, setPlaceholderIndex] = useState(0)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPlaceholderIndex(i => (i + 1) % suggestions.length)
+    }, 2500)
+    return () => clearInterval(interval)
+  }, [])
+
+  useEffect(() => {
+    setPlaceholder(suggestions[placeholderIndex])
+  }, [placeholderIndex])
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
-    const params = new URLSearchParams()
-    if (searchSubject) params.set('matiere', searchSubject)
-    if (searchCity) params.set('ville', searchCity)
-    navigate(`/recherche?${params.toString()}`)
+    if (searchValue) {
+      navigate(`/recherche?matiere=${encodeURIComponent(searchValue)}`)
+    } else {
+      navigate('/recherche')
+    }
   }
 
   const handleCategoryClick = (category: string) => {
@@ -35,112 +50,95 @@ export default function Home() {
 
   return (
     <div className="home">
-      {/* Hero Search */}
-      <section className="hero-search">
-        <h1>Trouvez le professeur parfait</h1>
-        <p className="hero-subtitle">
-          <Shield size={16} /> 100% gratuit · Profils vérifiés · Conforme DGCCRF
-        </p>
+      {/* Hero */}
+      <section className="hero">
+        <h1>Trouvez le<br/>professeur parfait</h1>
         
-        <form className="main-search" onSubmit={handleSearch}>
-          <div className="search-input-group">
+        <form className="search-form" onSubmit={handleSearch}>
+          <div className="search-box">
             <Search size={20} />
             <input 
               type="text"
-              placeholder="Que souhaitez-vous apprendre ?"
-              value={searchSubject}
-              onChange={(e) => setSearchSubject(e.target.value)}
-              list="subjects-list"
+              placeholder={`Essayez "${placeholder}"`}
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
             />
-            <datalist id="subjects-list">
-              {subjects.map(s => <option key={s} value={s} />)}
-            </datalist>
           </div>
-          <div className="search-input-group">
-            <MapPin size={20} />
-            <input 
-              type="text"
-              placeholder="Où ?"
-              value={searchCity}
-              onChange={(e) => setSearchCity(e.target.value)}
-              list="cities-list"
-            />
-            <datalist id="cities-list">
-              {cities.map(c => <option key={c} value={c} />)}
-            </datalist>
-          </div>
-          <button type="submit" className="search-btn">
-            Rechercher
-          </button>
+          <button type="submit" className="search-btn">Rechercher</button>
         </form>
 
-        {/* Quick Categories */}
+        {/* Categories */}
         <div className="categories">
-          <button className="cat-nav cat-prev"><ChevronLeft size={20} /></button>
-          <div className="categories-list">
-            {categories.map(cat => (
-              <button 
-                key={cat.name}
-                className="category-btn"
-                onClick={() => handleCategoryClick(cat.name)}
-              >
-                <cat.icon size={24} />
-                <span>{cat.name}</span>
-              </button>
-            ))}
-          </div>
-          <button className="cat-nav cat-next"><ChevronRight size={20} /></button>
+          {categories.map(cat => (
+            <button 
+              key={cat.name}
+              className="category-item"
+              onClick={() => handleCategoryClick(cat.name)}
+            >
+              <div className="category-icon">
+                <cat.icon size={22} />
+              </div>
+              <span>{cat.name}</span>
+            </button>
+          ))}
+          <button className="category-more">
+            <ChevronRight size={20} />
+          </button>
         </div>
       </section>
 
-      {/* Teachers Grid */}
-      <section className="teachers-section">
-        <div className="section-header">
-          <h2>
-            {teachers.length} professeurs vérifiés 
-            <span className="verified-badge"><CheckCircle size={16} /> 100% Gratuit</span>
-          </h2>
-        </div>
-
-        <div className="teachers-grid">
+      {/* Professors */}
+      <section className="professors">
+        <h2>8 500+ professeurs vérifiés <span className="stars">★★★★★</span></h2>
+        
+        <div className="professors-grid">
           {teachers.map(teacher => (
-            <TeacherCard key={teacher.id} teacher={teacher} variant="grid" />
+            <Link to={`/profil/${teacher.id}`} key={teacher.id} className="prof-card">
+              <div className="prof-image">
+                <img src={teacher.photo} alt={teacher.name} />
+                <button className="fav-btn"><Heart size={18} /></button>
+                <span className="free-badge">GRATUIT & VÉRIFIÉ</span>
+              </div>
+              <div className="prof-info">
+                <h3>{teacher.name}</h3>
+                <p className="prof-location">{teacher.city} (face à face & webcam)</p>
+              </div>
+              <div className="prof-details">
+                <div className="prof-rating">
+                  <span className="stars-small">★</span> {teacher.rating} <span className="reviews">({teacher.reviewCount} avis)</span>
+                  <span className="ambassador">✓ Vérifié</span>
+                </div>
+                <p className="prof-subject">
+                  <strong>{teacher.subject}</strong> · {teacher.description.slice(0, 60)}...
+                </p>
+              </div>
+            </Link>
           ))}
         </div>
 
-        <button className="load-more" onClick={() => navigate('/recherche')}>
-          Voir plus de professeurs
-        </button>
+        <Link to="/recherche" className="see-more">
+          + de professeurs près de chez vous
+        </Link>
       </section>
 
-      {/* Trust Banner */}
-      <section className="trust-banner">
-        <div className="trust-item">
-          <Shield size={24} />
-          <div>
+      {/* Trust */}
+      <section className="trust-section">
+        <div className="trust-grid">
+          <div className="trust-item">
+            <span className="trust-icon">🛡️</span>
             <strong>Identité vérifiée</strong>
-            <span>Pièce d'identité contrôlée</span>
           </div>
-        </div>
-        <div className="trust-item">
-          <CheckCircle size={24} />
-          <div>
+          <div className="trust-item">
+            <span className="trust-icon">🎓</span>
             <strong>Diplômes authentifiés</strong>
-            <span>Vérification auprès des établissements</span>
           </div>
-        </div>
-        <div className="trust-item">
-          <Star size={24} />
-          <div>
-            <strong>Avis vérifiés</strong>
-            <span>Contrôle IP & moyen de paiement</span>
+          <div className="trust-item">
+            <span className="trust-icon">⭐</span>
+            <strong>Avis vérifiés (IP)</strong>
           </div>
-        </div>
-        <div className="trust-item">
-          <Heart size={24} />
-          <div>
+          <div className="trust-item">
+            <span className="trust-icon">💚</span>
             <strong>100% Gratuit</strong>
-            <span>Aucune commission, jamais</span>
           </div>
         </div>
       </section>
